@@ -1,0 +1,37 @@
+.edit-post-main-content{
+    flex-basis: 73%;
+}
+.edit-post-side-content{
+    position: sticky;
+    top: 8rem;
+    flex-basis: 25%;
+    align-self: flex-start;
+}
+
+/* media queries */
+@media screen and (max-width: 1024px){
+    
+}
+
+@media screen and (max-width: 992px){
+    .edit-post-right-sidebar{
+        flex-basis: 100%;
+        position: relative;
+        top: unset;
+    }
+    .edit-post-main-content{
+        flex-basis: 100%;
+    }
+}
+
+@media screen and (max-width: 768px){
+    
+}
+
+@media screen and (max-width: 430px){
+    
+}
+
+@media screen and (max-width: 320px){
+    
+}

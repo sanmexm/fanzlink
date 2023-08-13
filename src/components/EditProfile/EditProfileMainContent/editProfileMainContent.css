@@ -1,0 +1,40 @@
+.edit-profile-wrapper{
+    position: relative;
+    padding: 1rem 2rem;
+    background-color: var(--white);
+    border-radius: .3rem;
+}
+.edit-profile-wrapper-title{
+    display: block;
+    margin-bottom: 2rem;
+}
+.edit-profile-wrapper-title h3{
+    color: var(--primary-color)
+}
+.edit-profile-form-wrapper{
+    position: relative;
+}
+.edit-profile-form{
+    position: relative;
+}
+
+/* media queries */
+@media screen and (max-width: 1024px){
+    
+}
+
+@media screen and (max-width: 992px){
+    
+}
+
+@media screen and (max-width: 768px){
+    
+}
+
+@media screen and (max-width: 430px){
+    
+}
+
+@media screen and (max-width: 320px){
+    
+}

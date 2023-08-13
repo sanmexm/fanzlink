@@ -1,0 +1,183 @@
+.widget-main-wrapper{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.widget-main{
+    background-color: #17181a;
+    width: var(--tab-width);
+    border-radius: .8rem;
+}
+.widget-tabs input{
+    /* display: none; */
+}
+.widget-tabs-top-input{
+    display: none;
+}
+.widget-buttons label{
+    padding: 2rem;
+    font-size: 1.5rem;
+    width: 6.4rem;
+    opacity: .35;
+    cursor: pointer;
+}
+.widget-content{
+    position: relative;
+    overflow: hidden;
+    min-height: 20rem;
+    padding: 3rem 0;
+}
+.widget-content-inner{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: calc(var(--tab-width) * 3);
+    transition: .3s;
+}
+.widget-content-inner > div{
+    width: inherit;
+    padding: 2rem;
+}
+.widget-buttons{
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #575757;
+}
+.widget-underline{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 6.4rem;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: .2s;
+}
+.widget-tabs input:nth-child(1):checked ~ .widget-buttons .widget-underline{
+    translate: 0 0;
+}
+.widget-tabs input:nth-child(2):checked ~ .widget-buttons .widget-underline{
+    translate: 6.4rem 0;
+}
+.widget-tabs input:nth-child(3):checked ~ .widget-buttons .widget-underline{
+    translate: calc( 6.4rem * 2) 0;
+}
+.widget-tabs input:nth-child(1):checked ~ .widget-buttons label:nth-child(1),
+.widget-tabs input:nth-child(2):checked ~ .widget-buttons label:nth-child(2),
+.widget-tabs input:nth-child(3):checked ~ .widget-buttons label:nth-child(3){
+    opacity: 1;
+    color: var(--primary-color);
+}
+.widget-tabs input:nth-child(1):checked ~ .widget-content > .widget-content-inner{
+    translate: 0 0;
+}
+.widget-tabs input:nth-child(2):checked ~ .widget-content > .widget-content-inner{
+    translate: calc(0px - var(--tab-width)) 0;
+}
+.widget-tabs input:nth-child(3):checked ~ .widget-content > .widget-content-inner{
+    translate: calc(0px - var(--tab-width) * 2) 0;
+}
+.widget-content-inner-detail{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.widget-content-inner-detail h3{
+    color: var(--primary-color);
+}
+
+
+
+
+
+
+/* .widget-main-wrapper{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.widget-main{
+    background-color: #17181a;
+    width: var(--tab-width);
+    border-radius: .8rem;
+}
+.widget-tabs input{
+    display: none;
+}
+.widget-buttons label{
+    padding: 2rem;
+    font-size: 1.5rem;
+    width: 6.4rem;
+    opacity: .35;
+    cursor: pointer;
+}
+.widget-content{
+    position: relative;
+    overflow: hidden;
+    min-height: 20rem;
+    padding: 3rem 0;
+}
+.widget-content-inner{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: calc(var(--tab-width) * 3);
+    transition: .3s;
+}
+.widget-content-inner > div{
+    width: inherit;
+    padding: 2rem;
+}
+.widget-buttons{
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #575757;
+}
+.widget-underline{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 6.4rem;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: .2s;
+}
+.widget-tabs input:nth-child(1):checked ~ .widget-buttons .widget-underline{
+    translate: 0 0;
+}
+.widget-tabs input:nth-child(2):checked ~ .widget-buttons .widget-underline{
+    translate: 6.4rem 0;
+}
+.widget-tabs input:nth-child(3):checked ~ .widget-buttons .widget-underline{
+    translate: calc( 6.4rem * 2) 0;
+}
+.widget-tabs input:nth-child(1):checked ~ .widget-buttons label:nth-child(1),
+.widget-tabs input:nth-child(2):checked ~ .widget-buttons label:nth-child(2),
+.widget-tabs input:nth-child(3):checked ~ .widget-buttons label:nth-child(3){
+    opacity: 1;
+    color: var(--primary-color);
+}
+.widget-tabs input:nth-child(1):checked ~ .widget-content > .widget-content-inner{
+    translate: 0 0;
+}
+.widget-tabs input:nth-child(2):checked ~ .widget-content > .widget-content-inner{
+    translate: calc(0px - var(--tab-width)) 0;
+}
+.widget-tabs input:nth-child(3):checked ~ .widget-content > .widget-content-inner{
+    translate: calc(0px - var(--tab-width) * 2) 0;
+}
+.widget-content-inner-detail{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.widget-content-inner-detail h3{
+    color: var(--primary-color);
+} */

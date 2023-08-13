@@ -1,0 +1,40 @@
+.create-post-wrapper{
+    position: relative;
+    padding: 1rem 2rem;
+    background-color: var(--white);
+    border-radius: .3rem;
+}
+.create-post-wrapper-title{
+    display: block;
+    margin-bottom: 2rem;
+}
+.create-post-wrapper-title h3{
+    color: var(--primary-color)
+}
+.create-post-form-wrapper{
+    position: relative;
+}
+.create-post-form{
+    position: relative;
+}
+
+/* media queries */
+@media screen and (max-width: 1024px){
+    
+}
+
+@media screen and (max-width: 992px){
+    
+}
+
+@media screen and (max-width: 768px){
+    
+}
+
+@media screen and (max-width: 430px){
+    
+}
+
+@media screen and (max-width: 320px){
+    
+}

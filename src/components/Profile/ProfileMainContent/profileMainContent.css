@@ -1,0 +1,72 @@
+.profile-post-wrapper{
+    position: relative;
+}
+.profile-post-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: var(--white);
+    padding: 2rem 1rem;
+    margin-bottom: .2rem;
+    border-radius: .3rem;
+}
+.profile-post-header-left{
+    position: relative;
+}
+.profile-post-header-right{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .5rem 1rem;
+}
+.profile-post-body-wrapper{
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: .3rem;
+    margin-bottom: .2rem;
+}
+.profile-post-body-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.profile-post-body-details-wrapper{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 2rem 0;
+    align-items: center;
+}
+.profile-post-details-title{
+    font-size: 1.2rem;
+}
+.profile-post-details-main{
+    background-color: var(--body-background-color);
+    padding: 1rem 2rem;
+    color: var(--black);
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: .3rem;
+}
+
+
+/* media queries */
+@media screen and (max-width: 1024px){
+    
+}
+
+@media screen and (max-width: 992px){
+    
+}
+
+@media screen and (max-width: 768px){
+    
+}
+
+@media screen and (max-width: 430px){
+    
+}
+
+@media screen and (max-width: 320px){
+    
+}

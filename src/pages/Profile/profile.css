@@ -1,0 +1,38 @@
+.profile-main-content{
+    flex-basis: 73%;
+}
+
+.profile-side-content{
+    position: sticky;
+    top: 8rem;
+    flex-basis: 25%;
+    align-self: flex-start;
+}
+
+/* media queries */
+@media screen and (max-width: 1024px){
+    
+}
+
+@media screen and (max-width: 992px){
+    .profile-right-sidebar{
+        flex-basis: 100%;
+        position: relative;
+        top: unset;
+    }
+    .profile-main-content{
+        flex-basis: 100%;
+    }
+}
+
+@media screen and (max-width: 768px){
+    
+}
+
+@media screen and (max-width: 430px){
+    
+}
+
+@media screen and (max-width: 320px){
+    
+}

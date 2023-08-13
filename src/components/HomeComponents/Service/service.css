@@ -1,0 +1,37 @@
+/* customers-service */
+.customer-service-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--white);
+    padding: 5rem 6% 0;
+}
+.customer-service{
+    width: 100%;
+    background: var(--black);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: .3rem .3rem 0 0;
+}
+.customer-service-detail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 3rem 0 1rem;
+    gap: 1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: default;
+}
+.customer-service-detail:last-child{
+    border-right: none;
+}
+.customer-service-detail small{
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
+.customer-service-detail span{
+    font-size: 3rem;
+    color: var(--white);
+}
+/* customers-service XX */
