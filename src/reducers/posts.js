@@ -1,4 +1,4 @@
-import { START_LOADING, END_LOADING, CREATE_POST, FETCH_ALL_POSTS, FETCH_POSTS_BY_SEARCH, SEARCH_USER_POSTS, FETCH_POST, FETCH_USER_POSTS, UPDATE_POST, COMMENT_POST, LIKE_POST, DELETE_POST } from "../constants/actionTypes";
+import { START_LOADING, END_LOADING, CREATE_POST, FETCH_ALL_POSTS, FETCH_POSTS_BY_SEARCH, SEARCH_USER_POSTS, FETCH_POST, FETCH_USER_POSTS, FETCH_SIMILAR_POSTS, UPDATE_POST, COMMENT_POST, REVIEW_POST, LIKE_POST, DELETE_POST, RATE_POST, VIEW_RATED_POST } from "../constants/actionTypes";
 
 /* eslint-disable import/no-anonymous-default-export */
 /* eslint-disable no-undef */
@@ -13,7 +13,7 @@ export default (state = { isLoading: true, posts: [] }, action) => {
         case FETCH_ALL_POSTS:
             return {
                 ...state,
-                posts: action.payload.data,
+                allPosts: action.payload.data,
                 currentPage: action.payload.currentPage,
                 numberOfPages: action.payload.numberOfPages,
                 totalNumber: action.payload.totalNumber,
@@ -26,6 +26,8 @@ export default (state = { isLoading: true, posts: [] }, action) => {
                 numberOfPages: action.payload.numberOfPages,
                 totalNumber: action.payload.totalNumber,
             }
+        case FETCH_SIMILAR_POSTS:
+            return {...state, similarPosts: action.payload}
         case SEARCH_USER_POSTS:
             return {
                 ...state,
@@ -35,7 +37,10 @@ export default (state = { isLoading: true, posts: [] }, action) => {
                 totalNumber: action.payload.totalNumber,
             }
         case FETCH_POST:
-            return {...state, post: action.payload}
+            return {
+                ...state, 
+                userPost: action.payload
+            }
         case FETCH_USER_POSTS:
             return {
                 ...state, 
@@ -55,6 +60,36 @@ export default (state = { isLoading: true, posts: [] }, action) => {
                     //return all other posts
                     return post
                 })
+            }
+        case REVIEW_POST:
+            return {
+                ...state, 
+                postReviews: state.posts.map((post) => {
+                    //change the post that just receive the review
+                    if(post._id === action.payload._id) return action.payload
+                    //return all other posts
+                    return post
+                }),
+            }
+        case RATE_POST: 
+            return {
+                ...state,
+                postRate: state.posts.map((post) => {
+                    //change the post that just receive the review
+                    if(post._id === action.payload._id) return action.payload
+                    //return all other posts
+                    return post
+                }),
+                actualRate: action.payload.data,
+                rateTotal: action.payload.totalRate,
+                sumTotal: action.payload.ratingSum,
+            }
+        case VIEW_RATED_POST: 
+            return {
+                ...state,
+                actualRating: action.payload.data,
+                totalRate: action.payload.totalRate,
+                ratingSum: action.payload.ratingSum,
             }
         case LIKE_POST:
             return {...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post))}

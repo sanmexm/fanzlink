@@ -1,3 +1,6 @@
+.button-disabled{
+    cursor: not-allowed;
+}
 .button-wrapper{
     width: fit-content;
 }

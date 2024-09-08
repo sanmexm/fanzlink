@@ -40,7 +40,7 @@ const Register = () => {
     }, [getAllUsers]);
 
     const [postData, setPostData]          = useState({firstName: '', lastName: '', emailAddress: '', username: '', sex: '', password: '', confirmPassword: ''})
-    const [isLoading, setIsLoading]        = useState({firstName: false, lastName: false, emailAddress: false, username: false, sex: false, password: false, confirmPassword: false, })
+    const [isLoadingBtn, setIsLoadingBtn]  = useState({firstName: false, lastName: false, emailAddress: false, username: false, sex: false, password: false, confirmPassword: false, })
     const [isValid, setIsValid]            = useState({firstName: false, lastName: false, emailAddress: false, username: false, sex: false, password: false, confirmPassword: false})
 
     const useDebounce = (value, delay ) => {
@@ -64,7 +64,7 @@ const Register = () => {
 
     const handleChange = (e) => {
       const { name, value } = e.target;
-      setIsLoading((prevState) => ({ ...prevState, [name]: true }));
+      setIsLoadingBtn((prevState) => ({ ...prevState, [name]: true }));
       setPostData((prevState) => ({ ...prevState, [name]: value }));
     }
 
@@ -76,7 +76,7 @@ const Register = () => {
           ...prevState,
           firstName: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           firstName: false,
         }));
@@ -89,7 +89,7 @@ const Register = () => {
           ...prevState,
           lastName: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           lastName: false,
         }));
@@ -102,7 +102,7 @@ const Register = () => {
           ...prevState,
           emailAddress: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           emailAddress: false,
         }));
@@ -115,7 +115,7 @@ const Register = () => {
           ...prevState,
           username: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           username: false,
         }));
@@ -128,7 +128,7 @@ const Register = () => {
           ...prevState,
           sex: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           sex: false,
         }));
@@ -141,7 +141,7 @@ const Register = () => {
           ...prevState,
           password: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           password: false,
         }));
@@ -155,7 +155,7 @@ const Register = () => {
           ...prevState,
           confirmPassword: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           confirmPassword: false,
         }));
@@ -190,13 +190,32 @@ const Register = () => {
       setIsButtonDisabled(hasFormErrors);
     }, [debouncedPostData, captchaValue, getAllUsers]);
     
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const returnConfirm = window.confirm('Are you sure you want to create account?')
-        if(returnConfirm){
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const returnConfirm = window.confirm('Are you sure you want to create account?')
+      if(returnConfirm){
         setSavingInfo(true);
-        dispatch(createUser(postData, setErrorMessage))
-        // console.log(postData)
+        const response = dispatch(createUser(postData))
+        try{
+          if(response.status === 400){
+            setErrorMessage(response.data.message)
+          }
+        }catch(error){
+          setErrorMessage("");
+        }finally{
+          setSavingInfo(false)
+        }
+        // if(response?.status === 400){
+        //   setErrorMessage(response.data.message)
+        //   setSavingInfo(false);
+        // } else if (response?.status === 404){
+        //   setErrorMessage(response.data.message)
+        //   setSavingInfo(false);
+        // }else{
+        //   setSavingInfo(true);
+        //   setErrorMessage(false)
+        // }
+      // console.log(postData)
       }
     }
     
@@ -204,45 +223,45 @@ const Register = () => {
     <>
         <Helmet><title>{pageName}</title></Helmet>
         <div className='account-container'>
-            <form className='account-reg-container' onSubmit={handleSubmit} autoComplete="off">
-              <div className='account-login-container-title'>
-                  <h3>Sign Up</h3>
-              </div>
+          <form className='account-reg-container' onSubmit={handleSubmit} autoComplete="off">
+            <div className='account-login-container-title'>
+                <h3>Sign Up</h3>
+            </div>
 
-              <div className='account-login-input-btn-pass-container'>
-                  <FormField inputType type="text" labelName="First Name" name="firstName" value={postData.firstName} handleChange={handleChange} isLoading={isLoading.firstName} isValid={isValid.firstName} errors={firstNameErrors || []} />
+            <div className='account-login-input-btn-pass-container'>
+                <FormField inputType type="text" labelName="First Name" name="firstName" value={postData.firstName} handleChange={handleChange} isLoadingBtn={isLoadingBtn.firstName} isValid={isValid.firstName} errors={firstNameErrors || []} />
+                
+                <FormField inputType type="text" labelName="Last Name" name="lastName" value={postData.lastName} handleChange={handleChange} isLoadingBtn={isLoadingBtn.lastName} isValid={isValid.lastName} errors={lastNameErrors || []} />
+
+                <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoadingBtn={isLoadingBtn.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
+
+                <FormField inputType type="text" labelName="Username" name="username" value={postData.username} handleChange={handleChange} isLoadingBtn={isLoadingBtn.username} isValid={isValid.username} errors={usernameErrors || []} />
+                
+                <div className='account-field-wrapper-quadruple'>
+                  <FormField radioType htmlFor="male" id="male" type="radio" name="sex" value="male" labelTitle="Male" handleChange={handleChange} isLoadingBtn={isLoadingBtn.sex} isValid={isValid.sex} errors={sexErrors || []} />
                   
-                  <FormField inputType type="text" labelName="Last Name" name="lastName" value={postData.lastName} handleChange={handleChange} isLoading={isLoading.lastName} isValid={isValid.lastName} errors={lastNameErrors || []} />
+                  <FormField radioType htmlFor="female" id="female" type="radio" name="sex" value="female" labelTitle="Female" handleChange={handleChange} isLoadingBtn={isLoadingBtn.sex} isValid={isValid.sex} errors={sexErrors || []} />
+                </div>
 
-                  <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoading={isLoading.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
-
-                  <FormField inputType type="text" labelName="Username" name="username" value={postData.username} handleChange={handleChange} isLoading={isLoading.username} isValid={isValid.username} errors={usernameErrors || []} />
-                  
-                  <div className='account-field-wrapper-quadruple'>
-                    <FormField radioType htmlFor="male" id="male" type="radio" name="sex" value="male" labelTitle="Male" handleChange={handleChange} isLoading={isLoading.sex} isValid={isValid.sex} errors={sexErrors || []} />
-                    
-                    <FormField radioType htmlFor="female" id="female" type="radio" name="sex" value="female" labelTitle="Female" handleChange={handleChange} isLoading={isLoading.sex} isValid={isValid.sex} errors={sexErrors || []} />
+                <div className='account-login-group-wrapper'>
+                  <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Password" name="password" value={postData.password} handleChange={handleChange} isLoadingBtn={isLoadingBtn.password} isValid={isValid.password} errors={passwordErrors || []} />
+                  <div className='account-login-show-hide-pass-container'>
+                    <span className={ postData.password.length > 0 ? 'show-hide-password unlock' : 'show-hide-password' } onClick={() => setHideShow((prev) => !prev)}>{hideShow ? <VisibilityOffIcon /> : <VisibilityIcon />}</span>
                   </div>
+                </div>
+                <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Confirm Password" name="confirmPassword" value={postData.confirmPassword} handleChange={handleChange} isLoadingBtn={isLoadingBtn.confirmPassword} isValid={isValid.confirmPassword} errors={confirmPasswordErrors || []} />
 
-                  <div className='account-login-group-wrapper'>
-                    <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Password" name="password" value={postData.password} handleChange={handleChange} isLoading={isLoading.password} isValid={isValid.password} errors={passwordErrors || []} />
-                    <div className='account-login-show-hide-pass-container'>
-                      <span className={ postData.password.length > 0 ? 'show-hide-password unlock' : 'show-hide-password' } onClick={() => setHideShow((prev) => !prev)}>{hideShow ? <VisibilityOffIcon /> : <VisibilityIcon />}</span>
-                    </div>
-                  </div>
-                  <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Confirm Password" name="confirmPassword" value={postData.confirmPassword} handleChange={handleChange} isLoading={isLoading.confirmPassword} isValid={isValid.confirmPassword} errors={confirmPasswordErrors || []} />
+                <div className='contact-captcha'><ReCAPTCHA sitekey="6Lck8TwnAAAAACY9Ep8jV5WsJWgfbg4VFIQYGAa8" onChange={handleChangeCaptcha}/></div>
 
-                  <div className='contact-captcha'><ReCAPTCHA sitekey="6Lck8TwnAAAAACY9Ep8jV5WsJWgfbg4VFIQYGAa8" onChange={handleChangeCaptcha}/></div>
+                <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Creating...</> : "Sign Up"} isButtonDisabled={isButtonDisabled} buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo} />
 
-                  <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Creating...</> : "Sign Up"} isButtonDisabled={isButtonDisabled} buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']} />
-
-                  {errorMessage && <p className='error-msg'>{errorMessage}</p>}
-              </div>
-              <div className='have-account-wrapper'>
-                <span>Have an Account?</span>
-                <Link className='account-reg-log' to="/login">Sign In</Link>
-              </div>
-            </form>
+                {errorMessage && <p className='error-msg'>{errorMessage}</p>}
+            </div>
+            <div className='have-account-wrapper'>
+              <span>Have an Account?</span>
+              <Link className='account-reg-log' to="/login">Sign In</Link>
+            </div>
+          </form>
         </div>
     </>
   )
@@ -285,7 +304,7 @@ export default Register
 //         ...prevState,
 //         emailAddress: isValid,
 //       }));
-//       setIsLoading((prevState) => ({
+//       setIsLoadingBtn((prevState) => ({
 //         ...prevState,
 //         emailAddress: false,
 //       }));

@@ -45,7 +45,8 @@ const userValidateEmailAddress = (postData, getAllUsers) => {
     if (postData === '') {
         errors.push('');
         isValid = true;
-    } else if (getAllUsers.map(user => user.emailAddress).includes(postData)) {
+    } else if (Array.isArray(getAllUsers) && getAllUsers.map(user => user.emailAddress).includes(postData)) {
+    // } else if (getAllUsers.map(user => user.emailAddress).includes(postData)) {
         errors.push('email address already exist');
         isValid = false;
     } else if (!emailRegex.test(postData)) {
@@ -62,7 +63,8 @@ const userValidateUsername = (postData, getAllUsers) => {
     if(postData === ''){
         errors.push('');
         isValid = true;
-    } else if(getAllUsers.map(user => user.username).includes(postData)){
+    // } else if(getAllUsers.map(user => user.username).includes(postData)){
+    } else if (Array.isArray(getAllUsers) && getAllUsers.map(user => user.username).includes(postData)) {
         errors.push('user already exist');
         isValid = false;
     } else if (postData.length <= 6) {
@@ -104,7 +106,7 @@ const userValidatePassword = (postData) => {
 }
 
 const userValidateConfirmPassword = (postData) => {
-    // the confirm password function should connect from the postData since youre comparing two fields
+    // the confirm password function should connect from the postData since you're comparing two fields
     const errors = [];
     let isValid  = true;
     // validate confirm password

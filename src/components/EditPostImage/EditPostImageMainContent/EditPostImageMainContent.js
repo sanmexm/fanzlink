@@ -9,6 +9,9 @@ import {Button, FormField, Loader} from '../../';
 import './editPostImageMainContent.css'
 
 const EditPostImageMainContent = () => {
+    const authData                                      = JSON.parse(localStorage.getItem('authData'))
+    // const UserUniqueId          = authData?.result?._id +''+ authData?.result?.firstName +' '+ authData?.result?.lastName
+    const userUniqueId                                  = authData?.result?._id
     const dispatch                                      = useDispatch();
     const navigate                                      = useNavigate();
     const location                                      = useLocation();
@@ -17,21 +20,21 @@ const EditPostImageMainContent = () => {
     const [productImg, setProductImg]                   = useState(null);
     const [selectedFileErrors, setSelectedFileErrors]   = useState(null);
 
-    const [postData, setPostData]             = useState({userId: 'WK43978433334sa', selectedFile: ''})
+    const [postData, setPostData]             = useState({userId: userUniqueId, selectedFile: ''})
     const [ isLoading, setIsLoading ]         = useState({selectedFile: false})
     const [ isValid, setIsValid ]             = useState({selectedFile: false})
 
     const useDebounce = (value, delay ) => {
-        const [debounced, setDebounced] = useState(value)
-    
-        useEffect(() =>{
-          const handler = setTimeout(() => {
-            setDebounced(value)
-          }, delay);
-          return () => clearTimeout(handler)
-        }, [value, delay])
-    
-        return debounced
+      const [debounced, setDebounced] = useState(value)
+  
+      useEffect(() =>{
+        const handler = setTimeout(() => {
+          setDebounced(value)
+        }, delay);
+        return () => clearTimeout(handler)
+      }, [value, delay])
+  
+      return debounced
     }
 
     const debouncedPostData = useDebounce(postData, 500)
@@ -49,22 +52,22 @@ const EditPostImageMainContent = () => {
     };
     
     const handleProductImageUpload = (e) => {
-    const file = e.target.files[0]
+      const file = e.target.files[0]
 
-    transformFile(file)
+      transformFile(file)
     }
     
     const transformFile = (file) => {
-    const reader = new FileReader()
+      const reader = new FileReader()
 
-    if(file){
-        reader.readAsDataURL(file)
-        reader.onloadend = () => {
-        setProductImg(reader.result)
-        }
-    }else{
-        setProductImg("")
-    }
+      if(file){
+          reader.readAsDataURL(file)
+          reader.onloadend = () => {
+          setProductImg(reader.result)
+          }
+      }else{
+          setProductImg("")
+      }
     }
 
     useEffect(() => {
@@ -127,7 +130,7 @@ const EditPostImageMainContent = () => {
                 </div>
               </div>
 
-              <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Updating...</> : "Update"} isButtonDisabled={isButtonDisabled} buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']} />
+              <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Updating...</> : "Update"} isButtonDisabled={isButtonDisabled} buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo} />
 
           </form>
         </div>

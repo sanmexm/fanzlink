@@ -14,7 +14,7 @@ const UserHeader = ({ viewProfileBtn, spanTitle }) => {
       <div className='personal-profile-info-container'>
         <div className='personal-info-container-inner-main'>
             <div className='personal-info-container-inner-img-wrapper'> 
-                <img src={userImage} alt="profile img" className='personal-info-picture' />
+              <img src={userImage} alt="profile img" className='personal-info-picture' />
             </div>
             <div className='personal-info-container-inner-detail'>
                 <h2>Hi {userFirstName} .{userLastName.charAt(0)} <img src={verification} alt='verification' title='verified account'/></h2>

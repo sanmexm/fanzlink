@@ -1,212 +1,239 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ArrowBackIosRoundedIcon, ArrowForwardIosRoundedIcon } from '../../../utils/constants'
-import { about, img1, userImage } from '../../../assets'
-import { TruncatedText, Button } from '../../'
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import { Loader, PostReviews, RatePost, SimilarPosts } from '../../'
+import { fetchPost, fetchPostRatings, fetchSimilarPosts } from '../../../actions/posts'
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 import './previewPostMainContent.css'
 
 const PreviewPostMainContent = () => {
-  const galleryRef                        = useRef(null);
-  const [canScrollNext, setCanScrollNext] = useState(true);
-  const [canScrollBack, setCanScrollBack] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(about);
+  const dispatch                                    = useDispatch()
+  const { id }                                      = useParams()
+  const {isLoading, userPost, allPosts, actualRating, totalRate, ratingSum} = useSelector((state) => state.postsLists)
+  const [selectedImage, setSelectedImage]           = useState("");
+  const [dynamicMainBullets, setDynamicMainBullets] = useState(4);
+  const [rating, setRating]                         = useState(0);
+
+  const recommendedPosts = allPosts?.filter(({ _id}) => _id !==  userPost._id)
+
+  const swiperSubImageSettings = {
+    modules: [Navigation, Pagination],
+    spaceBetween: 0,
+    slidesPerView: 4,
+    grabCursor: true,
+    pagination: {
+      dynamicBullets: true,
+      dynamicMainBullets: dynamicMainBullets,
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      0:{
+        slidesPerView: 2,
+        dynamicMainBullets: 2,
+      },
+      430:{
+        slidesPerView: 3,
+        dynamicMainBullets: 3,
+      },
+      768:{
+        slidesPerView: 3,
+        dynamicMainBullets: 3,
+      },
+      1024:{
+        slidesPerView: 4,
+        dynamicMainBullets: 4,
+      }
+    }
+  }
+
+  // Calculate and update dynamic main bullets based on current breakpoint
+  const updateDynamicMainBullets = () => {
+    const windowWidth = window.innerWidth;
+    if (windowWidth >= 1024) {
+      setDynamicMainBullets(4);
+    } else if (windowWidth >= 768) {
+      setDynamicMainBullets(3);
+    } else if (windowWidth >= 430) {
+      setDynamicMainBullets(3);
+    } else {
+      setDynamicMainBullets(2);
+    }
+  };
+
+  // Listen for window resize to update dynamic main bullets
+  useEffect(() => {
+    updateDynamicMainBullets();
+    window.addEventListener('resize', updateDynamicMainBullets);
+    return () => {
+      window.removeEventListener('resize', updateDynamicMainBullets);
+    };
+  }, []);
 
   const handleSubImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
   };
 
   useEffect(() => {
-    const scrollContainer = galleryRef.current;
-    const nextBtn = document.getElementById('nextBtn');
-    const backBtn = document.getElementById('backBtn');
+    dispatch(fetchPost(id))
+    dispatch(fetchPostRatings(id))
+  }, [id, dispatch])
 
-    const handleScroll = () => {
-      const isAtBeginning = scrollContainer.scrollLeft === 0;
-      const isAtEnd = scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth;
-  
-      setCanScrollNext(!isAtEnd);
-      setCanScrollBack(!isAtBeginning);
-    };
+  // useEffect(() => {
+    
+  // }, [id, dispatch])
 
-    const updateScrollAvailability = () => {
-      const subImageWrappers = scrollContainer.getElementsByClassName(
-        'sub-post-gallery-img-wrapper'
-      );
-
-      let totalImagesWidth = 0;
-      for (let i = 0; i < subImageWrappers.length; i++) {
-        totalImagesWidth += subImageWrappers[i].offsetWidth;
-      }
-
-      const isScrollable = totalImagesWidth > scrollContainer.clientWidth;
-
-      setCanScrollNext(canScrollNext && isScrollable);
-    };
-
-    scrollContainer.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', updateScrollAvailability);
-
-    // Call the updateScrollAvailability initially to set the correct button visibility
-    updateScrollAvailability();
-
-    scrollContainer.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const scrollAmount = e.deltaY > 0 ? 100 : -100;
-      scrollContainer.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth',
-      });
-    });
-
-    nextBtn.addEventListener('click', () => {
-      scrollContainer.scrollBy({
-        left: 100,
-        behavior: 'smooth',
-      });
-    });
-
-    backBtn.addEventListener('click', () => {
-      scrollContainer.scrollBy({
-        left: -100,
-        behavior: 'smooth',
-      });
-    });
-
-    return () => {
-      window.removeEventListener('resize', updateScrollAvailability);
-      scrollContainer.removeEventListener('scroll', handleScroll);
-      scrollContainer.removeEventListener('wheel', () => {});
-      nextBtn.removeEventListener('click', () => {});
-      backBtn.removeEventListener('click', () => {});
-    };
-  }, [canScrollNext]);
+  useEffect(() => {
+    if(userPost){
+      dispatch(fetchSimilarPosts({ search: 'none', category: userPost?.category}))
+    }
+  }, [userPost, dispatch])
 
   return (
     <>
-        <div className='preview-post-wrapper'>
-            <div className="preview-post-header">
-              <span>posts {'>'} Preview</span>
-            </div>
-            <div className="preview-post-main">
-              <div className='preview-post-main-title'>Specialist in video coverage Reprehenderit labore voluptate et laborum laboris velit consectetur ea eiusmod mollit elit fugiat. Lorem sint in minim aute reprehenderit culpa. Dolore ipsum proident eiusmod nisi ex ad minim dolor.</div>
-
-              <div className='preview-post-main-body'>
-                <div className='preview-post-main-body-header'>
-                  <div className='preview-post-main-body-image-wrapper'>
-                    <div className='preview-post-main-body-main-image'>
-                      <img src={selectedImage} alt='main img' />
-                    </div>
-                    <div className='preview-post-main-body-sub-image-wrap'>
-                      <span id='backBtn' className={canScrollBack ? 'preview-post-btn': 'preview-post-btn active backBtn'}><ArrowBackIosRoundedIcon /></span>
-                      <div className="sub-post-gallery" ref={galleryRef}>
-                        <div className='sub-post-gallery-detail'>
-                          <div className='sub-post-gallery-img-wrapper' onClick={() => handleSubImageClick(about)}>
-                            <img src={about} alt='main img' />
-                          </div>
-                          <div className='sub-post-gallery-img-wrapper' onClick={() => handleSubImageClick(img1)}>
-                            <img src={img1} alt='main img' />
-                          </div>
-                          <div className='sub-post-gallery-img-wrapper' onClick={() => handleSubImageClick(userImage)}>
-                            <img src={userImage} alt='main img' />
-                          </div>
-                          <div className='sub-post-gallery-img-wrapper' onClick={() => handleSubImageClick(img1)}>
-                            <img src={img1} alt='main img' />
-                          </div>
-                          <div className='sub-post-gallery-img-wrapper' onClick={() => handleSubImageClick(userImage)}>
-                            <img src={userImage} alt='main img' />
-                          </div>
-                          <div className='sub-post-gallery-img-wrapper' onClick={() => handleSubImageClick(about)}>
-                            <img src={about} alt='main img' />
-                          </div>
-                        </div>
-                      </div>
-                      <span id='nextBtn' className={canScrollNext ? 'preview-post-btn': 'preview-post-btn active nextBtn'}><ArrowForwardIosRoundedIcon /></span>
-                    </div>
-                  </div>
-                  <div className='preview-post-main-body-details'>
-                    <div className='preview-post-main-body-details-title'>
-                      <h3>Description</h3>
-                    </div>
-                    <div className='preview-post-main-body-details-body'>
-                      Irure quis Lorem eiusmod laborum dolor cupidatat ex et tempor. Occaecat consequat Lorem adipisicing adipisicing. Anim irure nisi duis elit non magna aliqua nisi dolore nisi labore. Qui ut veniam nulla nulla veniam laborum. Laboris veniam qui laborum non mollit enim eiusmod sint voluptate sint dolore aliquip eiusmod. Commodo fugiat do nostrud sit commodo. Labore adipisicing labore laborum eiusmod ex reprehenderit tempor nostrud fugiat esse nulla aliqua.
-                    </div>
-                  </div>
-                  <div className='preview-post-main-body-details'>
-                    <div className='preview-post-main-body-details-title'>
-                      <h3>Price</h3>
-                    </div>
-                    <div className='preview-post-main-body-details-body'>
-                      &#8358;5000
-                    </div>
-                  </div>
-                  <div className='preview-post-main-body-details'>
-                    <div className='preview-post-main-body-details-title'>
-                      <h3>Location</h3>
-                    </div>
-                    <div className='preview-post-main-body-details-body'>
-                      Lagos
-                    </div>
-                  </div>
-                  <div className='preview-post-main-body-details'>
-                    <div className='preview-post-main-body-details-title'>
-                      <h3>Links</h3>
-                    </div>
-                    <div className='preview-post-main-body-details-body'>
-                      <a href='https://www.facebook.com' title='https://www.facebook.com'>https://www.facebook.com/product-link</a>
-                      <a href='https://www.facebook.com' title='https://www.facebook.com'>https://www.twitter.com/product-link</a>
-                      <a href='https://www.facebook.com' title='https://www.facebook.com'>https://www.amazon.com/product-link</a>
-                    </div>
-                  </div>
+      {isLoading ? (
+          <Loader />
+        ) : (
+          userPost ? (
+            <div className='preview-post-wrapper'>
+              <div className="preview-post-header">
+                <span>posts {'>'} Preview</span>
+              </div>
+              <div className="preview-post-main">
+                <div className='react-carousel-wrapper'>
                 </div>
-                <div className='preview-post-main-body-similar-posts'>
-                  <h2>Related Posts</h2>
-                  <div className='preview-post-main-body-similar-posts-main-wrapper'>
-                    <div className='preview-post-main-body-similar-main'>
-                      <div className='body-similar-posts-img-wrapper'>
-                        <img src={about} alt='about' />
+                <div className='preview-post-main-title'>
+                  {userPost.title}
+                </div>
+                <div className='preview-post-main-body'>
+                  <div className='preview-post-main-body-header'>
+                    <div className='preview-post-main-body-image-wrapper'>
+                      <div className='preview-post-main-body-main-image'>
+                        <img src={selectedImage || userPost.selectedFile} alt='product main img' />
                       </div>
-                      <div className='body-similar-posts-details'>
-                        <span><TruncatedText text="Lorem sint in minimaute reprehenderit culpa. Do ex ad minim dolor" maxLength={20} /></span>
-                        <span>&#8358;10,000</span>
-                        <Button buttonWrapper="button-wrapper" linkButton linkTo="/" linkClass="link-wrapper" linkName="view post"/>
-                      </div>
-                    </div>
-                    <div className='preview-post-main-body-similar-main'>
-                      <div className='body-similar-posts-img-wrapper'>
-                        <img src={about} alt='about' />
-                      </div>
-                      <div className='body-similar-posts-details'>
-                        <span><TruncatedText text="Lorem sint in minimaute reprehenderit culpa. Do ex ad minim dolor" maxLength={20} /></span>
-                        <span>&#8358;10,000</span>
-                        <Button buttonWrapper="button-wrapper" linkButton linkTo="/" linkClass="link-wrapper" linkName="view post"/>
-                      </div>
-                    </div>
-                    <div className='preview-post-main-body-similar-main'>
-                      <div className='body-similar-posts-img-wrapper'>
-                        <img src={about} alt='about' />
-                      </div>
-                      <div className='body-similar-posts-details'>
-                        <span><TruncatedText text="Lorem sint in minimaute reprehenderit culpa. Do ex ad minim dolor" maxLength={20} /></span>
-                        <span>&#8358;10,000</span>
-                        <Button buttonWrapper="button-wrapper" linkButton linkTo="/" linkClass="link-wrapper" linkName="view post"/>
+                      
+                      <div className='preview-sub-image-swiper-container'>
+                        <Swiper {...swiperSubImageSettings} className="preview-post-main-body-sub-image-wrap">
+                          {/* <div className='preview-post-swiper-sub-image-main-content' onClick={() => handleSubImageClick(userPost.selectedFile)}>
+                            <img src={userPost.selectedFile} alt='main img' />
+                          </div> */}
+                          {userPost.selectedFileImages.map((imageX, index) => (
+                            <SwiperSlide key={index} className='preview-post-swiper-sub-image-settings'>
+                              <div className='preview-post-swiper-sub-image-main-content' onClick={() => handleSubImageClick(imageX)}>
+                                <img src={imageX} alt='main img' />
+                              </div>
+                            </SwiperSlide>
+                          ))}
+                          <div className="preview-post-swiper-button swiper-button-prev"></div>
+                          <div className="preview-post-swiper-button swiper-button-next"></div>
+                        </Swiper>
                       </div>
                     </div>
-                    <div className='preview-post-main-body-similar-main'>
-                      <div className='body-similar-posts-img-wrapper'>
-                        <img src={about} alt='about' />
+                    
+                    <div className='preview-post-main-body-details'>
+                      <div className='preview-post-main-body-details-title'>
+                        <h3>Category</h3>
                       </div>
-                      <div className='body-similar-posts-details'>
-                        <span><TruncatedText text="Lorem sint in minimaute reprehenderit culpa. Do ex ad minim dolor" maxLength={20} /></span>
-                        <span>&#8358;10,000</span>
-                        <Button buttonWrapper="button-wrapper" linkButton linkTo="/" linkClass="link-wrapper" linkName="view post"/>
+                      <div className='preview-post-main-body-details-body'>
+                        {userPost.category}
+                      </div>
+                    </div>
+                    <div className='preview-post-main-body-details'>
+                      <div className='preview-post-main-body-details-title'>
+                        <h3>Description</h3>
+                      </div>
+                      <div className='preview-post-main-body-details-body'>
+                        {userPost.description}
+                      </div>
+                    </div>
+                    <div className='preview-post-main-body-details'>
+                      <div className='preview-post-main-body-details-title'>
+                        <h3>Price</h3>
+                      </div>
+                      <div className='preview-post-main-body-details-body'>
+                        &#8358;{userPost.price}
+                      </div>
+                    </div>
+                    <div className='preview-post-main-body-details'>
+                      <div className='preview-post-main-body-details-title'>
+                        <h3>Verified Ratings ({totalRate})</h3>
+                      </div>
+                      <div className='preview-post-main-body-details-body'>
+                        <span>{ratingSum}/5</span><br/>
+                        <span>{actualRating} verified ratings</span>
+                      </div>
+                    </div>
+                    <div className='preview-post-main-body-details'>
+                      <div className='preview-post-main-body-details-title'>
+                        <h3>Location 12345</h3>
+                      </div>
+                      <div className='preview-post-main-body-details-body'>
+                        {userPost.location}
+                      </div>
+                    </div>
+                    <div className='preview-post-main-body-details'>
+                      <div className='preview-post-main-body-details-title'>
+                        <h3>Links</h3>
+                      </div>
+                      <div className='preview-post-main-body-details-body'>
+                        <a href='https://www.facebook.com' title='https://www.facebook.com'>https://www.facebook.com/product-link</a>
+                        <a href='https://www.facebook.com' title='https://www.facebook.com'>https://www.twitter.com/product-link</a>
+                        <a href='https://www.facebook.com' title='https://www.facebook.com'>https://www.amazon.com/product-link</a>
                       </div>
                     </div>
                   </div>
+
+                  <RatePost rating={rating} postId={id} onRating={(rate) => setRating(rate)} />
+
+                  <PostReviews loading={isLoading} postId={id} userPost={userPost} />
+                  
+                  <SimilarPosts recommendedPosts={recommendedPosts} isLoading={isLoading} />
+                
                 </div>
               </div>
             </div>
-        </div>
+        ) : (
+          <div className='empty-profile-card-wrapper'>
+            <div className='empty-profile-card-header'>
+              <h1>No Posts Found</h1>
+            </div>
+            <Link className='doctors' to='/posts/create-post'>
+              Create post
+            </Link>
+          </div>
+        )
+      )}
     </>
   )
 }
 
 export default PreviewPostMainContent
+
+// <!-- Slider main container basic setup -->
+// {/* <div class="swiper">
+//   <!-- Additional required wrapper -->
+//   <div class="swiper-wrapper">
+//     <!-- Slides -->
+//     <div class="swiper-slide">Slide 1</div>
+//     <div class="swiper-slide">Slide 2</div>
+//     <div class="swiper-slide">Slide 3</div>
+//     ...
+//   </div>
+//   <!-- If we need pagination -->
+//   <div class="swiper-pagination"></div>
+
+//   <!-- If we need navigation buttons -->
+//   <div class="swiper-button-prev"></div>
+//   <div class="swiper-button-next"></div>
+
+//   <!-- If we need scrollbar -->
+//   <div class="swiper-scrollbar"></div>
+// </div> */}

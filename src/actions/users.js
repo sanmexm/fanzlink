@@ -4,7 +4,7 @@ import { START_LOADING, END_LOADING, FETCH_ALL_USERS, FETCH_USERS_BY_SEARCH, FET
 //action creators
 // redux thunk allows additional arrow function to a function
 
-export const fetchUsers = (page, setError) => async(dispatch) => {
+export const fetchUsers = (page) => async(dispatch) => {
     try{
         dispatch({ type: START_LOADING })
         const { data } = await api.fetchUsers(page)
@@ -13,9 +13,18 @@ export const fetchUsers = (page, setError) => async(dispatch) => {
             payload: data
         })
         dispatch({ type: END_LOADING })
+        return data
     }catch(error){
         console.log(error)
-        setError('Unable to fetch users')
+        console.log("Axios error:", error);
+        if (error.response) {
+            console.log("Error status:", error.response.status);
+            console.log("Error message:", error.response.data.data.message);
+            return error.response; // Return the error response object
+        } else {
+            console.log("Error details:", error.message);
+            throw error; // Re-throw the error to be caught in the handleSubmit function
+        }
     }
 }
 
@@ -28,13 +37,23 @@ export const fetchUsersBySearch = (page, searchQuery, setError) => async(dispatc
             payload: data
         })
         dispatch({ type: END_LOADING })
+        return data
     }catch(error){
         console.log(error)
         setError('Unable to load')
+        console.log("Axios error:", error);
+        if (error.response) {
+            console.log("Error status:", error.response.status);
+            console.log("Error message:", error.response.data.data.message);
+            return error.response; // Return the error response object
+        } else {
+            console.log("Error details:", error.message);
+            throw error; // Re-throw the error to be caught in the handleSubmit function
+        }
     }
 }
 
-export const fetchUser = (id, setError) => async(dispatch) => {
+export const fetchUser = (id) => async(dispatch) => {
     try{
         dispatch({ type: START_LOADING })
         const { data } = await api.fetchUser(id)
@@ -43,9 +62,18 @@ export const fetchUser = (id, setError) => async(dispatch) => {
             payload: data
         })
         dispatch({ type: END_LOADING })
+        return data
     }catch(error){
         console.log(error)
-        setError('Unable to load user')
+        console.log("Axios error:", error);
+        if (error.response) {
+            console.log("Error status:", error.response.status);
+            console.log("Error message:", error.response.data.data.message);
+            return error.response; // Return the error response object
+        } else {
+            console.log("Error details:", error.message);
+            throw error; // Re-throw the error to be caught in the handleSubmit function
+        }
     }
 }
 
@@ -59,9 +87,19 @@ export const updateUser = (id, updatedUser, setError) => async(dispatch) => {
         })
         // navigate(window.location.reload())
         dispatch({ type: END_LOADING })
+        return data
     }catch(error){
         console.log(error)
         setError('Unable to update user')
+        console.log("Axios error:", error);
+        if (error.response) {
+            console.log("Error status:", error.response.status);
+            console.log("Error message:", error.response.data.data.message);
+            return error.response; // Return the error response object
+        } else {
+            console.log("Error details:", error.message);
+            throw error; // Re-throw the error to be caught in the handleSubmit function
+        }
     }
 }
 
@@ -77,7 +115,7 @@ export const resendVerification = (emailAddress) => async(dispatch) => {
     }
 }
 
-export const verifyUserRegEmail = ( id, emailToken, setError ) => async(dispatch) => {
+export const verifyUserRegEmail = ( id, emailToken ) => async(dispatch) => {
     try{
         const response = await api.verifyUserRegEmail(id, emailToken)
         return response;
@@ -98,15 +136,24 @@ export const verifyEmailPassword = (emailAddress) => async(dispatch) => {
     try{
         // dispatch({ type: START_LOADING })
         // const { data } = await api.verifyEmailPassword(emailAddress)
-        await api.verifyEmailPassword(emailAddress)
+        const response = await api.verifyEmailPassword(emailAddress)
         // dispatch({
         //     type: VERIFY_EMAIL_PASSWORD,
         //     payload: data
         // })
         // console.log(data)
         // dispatch({ type: END_LOADING })
+        return response
     }catch(error){
-        console.log(error)
+        console.log("Axios error:", error);
+        if (error.response) {
+            console.log("Error status:", error.response.status);
+            console.log("Error message:", error.response.data.data.message);
+            return error.response; // Return the error response object
+        } else {
+            console.log("Error details:", error.message);
+            throw error; // Re-throw the error to be caught in the handleSubmit function
+        }
         // setError('something went wrong')
     }
 }

@@ -47,6 +47,9 @@ import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlin
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 import PasswordRoundedIcon from '@mui/icons-material/PasswordRounded';
+import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
+import StarRateRoundedIcon from '@mui/icons-material/StarRateRounded';
+import { about, img1, userImage } from '../assets';
 
 export const featuresList = [
     {id: 1, icon: <ShutterSpeedRoundedIcon />, title: 'capture more leads', detail: 'Claim your listing and promote your products and services to gain more customers'},
@@ -70,6 +73,18 @@ export const navLinks = [
     // { id: 2, name: 'dashboard', link: '/dashboard'},
     // { id: 3, name: 'profile', link: '/profile'},
     // { id: 4, name: 'user', link: '/profile/user'},
+]
+
+export const images = [
+    {id: 1, image: about},
+    {id: 2, image: img1},
+    {id: 3, image: userImage},
+    {id: 4, image: img1},
+    {id: 5, image: userImage},
+    {id: 6, image: about},
+    {id: 7, image: img1},
+    {id: 8, image: userImage},
+    {id: 9, image: about},
 ]
 
 export const categoryList = [
@@ -166,4 +181,6 @@ export {
     BlockRoundedIcon,
     KeyboardBackspaceRoundedIcon,
     PasswordRoundedIcon,
+    StarOutlineRoundedIcon,
+    StarRateRoundedIcon,
 }

@@ -4,6 +4,7 @@ import about from './about.jpg'
 import soon from './soon.jpg'
 import soon1 from './soon1.jpg'
 import soon2 from './soon2.jpg'
+import userImg from './user.svg'
 import callChat from './call-chat.svg'
 import check from './check.svg'
 import email from './email.svg'
@@ -23,6 +24,7 @@ export {
     soon,
     soon1,
     soon2,
+    userImg,
     callChat,
     check,
     email,

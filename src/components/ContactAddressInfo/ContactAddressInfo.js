@@ -1,6 +1,6 @@
 import React from 'react'
-
 import { FacebookIcon, InstagramIcon, LocationOnIcon, ShareRoundedIcon, SupportAgentRoundedIcon, TwitterIcon } from '../../utils/constants'
+
 import './contactAddressInfo.css'
 
 const ContactAddressInfo = () => {

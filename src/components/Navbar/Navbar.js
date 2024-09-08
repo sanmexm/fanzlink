@@ -29,29 +29,60 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    const resetTimer = () => {
+    let tokenExpirationTimeout;
+    let inactivityTimeout;
+  
+    const resetTokenExpirationTimer = () => {
+      clearTimeout(tokenExpirationTimeout);
+  
       const token = user?.token;
       if (token) {
         const decodedToken = decode(token);
-        if (decodedToken.exp) {
-          clearTimeout(decodedToken.exp);
+        const currentTime = Math.floor(Date.now() / 1000);
+  
+        if (decodedToken.exp && decodedToken.exp < currentTime) {
+          logoutUser();
+        } else {
+          const timeUntilExpiration = (decodedToken.exp - currentTime) * 1000;
+          tokenExpirationTimeout = setTimeout(logoutUser, timeUntilExpiration);
         }
-        decodedToken.exp = setTimeout(logoutUser, 15 * 60 * 1000);
       }
+    };
+  
+    const resetInactivityTimer = () => {
+      clearTimeout(inactivityTimeout);
+      inactivityTimeout = setTimeout(logoutUser, 15 * 60 * 1000);
+    };
+  
+    const clearTimers = () => {
+      clearTimeout(tokenExpirationTimeout);
+      clearTimeout(inactivityTimeout);
     };
   
     const events = ["load", "mousemove", "mousedown", "touchstart", "click", "keypress", "scroll", "resize", "contextmenu", "wheel", "keydown", "keyup", "focus", "blur"];
   
     events.forEach((event) => {
-      window.addEventListener(event, resetTimer);
+      window.addEventListener(event, () => {
+        resetTokenExpirationTimer();
+        resetInactivityTimer();
+      });
     });
   
-    return () => {
+    const clearTimersOnUnload = () => {
+      clearTimers();
       events.forEach((event) => {
-        window.removeEventListener(event, resetTimer);
+        window.removeEventListener(event, resetTokenExpirationTimer);
+        window.removeEventListener(event, resetInactivityTimer);
       });
     };
-  }, [location, user?.token]);
+  
+    window.addEventListener("beforeunload", clearTimersOnUnload);
+  
+    return () => {
+      clearTimersOnUnload();
+      window.removeEventListener("beforeunload", clearTimersOnUnload);
+    };
+  }, [user?.token]);  
 
   return (
     <>

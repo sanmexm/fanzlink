@@ -3,7 +3,7 @@ import React from 'react';
 import { CloudUploadRoundedIcon } from '../../utils/constants';
 import './formField.css'
 
-const FormField = ({isLoading, isValid, hidden, labelBoolean, labelName, labelTitle, name, id, accept, type, value, handleChange, handleBlur, inputType, fileInputType, selectType, textareaType, readOnly, maxLength, fullNameOption, valueOptionId, radioType, htmlFor, errors, options=[]}) => {
+const FormField = ({isLoadingBtn, isValid, hidden, labelBoolean, labelName, labelTitle, name, id, accept, type, value, handleChange, handleBlur, inputType, fileInputType, multipleFileInputType, selectType, textareaType, readOnly, maxLength, fullNameOption, valueOptionId, radioType, htmlFor, errors, options=[]}) => {
 
   return (
     <>
@@ -29,6 +29,14 @@ const FormField = ({isLoading, isValid, hidden, labelBoolean, labelName, labelTi
                 <input id="reg-input-file" type="file" accept="image/*" required name={name} onChange={handleChange} hidden />
                 <div className='reg-input-file-icon'><CloudUploadRoundedIcon /></div>
                 <span>Click to select a file</span>
+              </label>
+            </>
+          ) : multipleFileInputType ? (
+            <>
+              <label htmlFor='reg-input-multiple-file' className='reg-input-file-wrapper' title='upload multiple files'>
+                <input id="reg-input-multiple-file" type="file" accept="image/*" multiple max="10" required name={name} onChange={handleChange} hidden />
+                <div className='reg-input-file-icon'><CloudUploadRoundedIcon /></div>
+                <span>Click to select multiple files</span>
               </label>
             </>
           ) : selectType ? (
@@ -61,7 +69,7 @@ const FormField = ({isLoading, isValid, hidden, labelBoolean, labelName, labelTi
               {labelName}
             </label>
           )}
-        <div className={`spinner ${isLoading ? 'loading' : ''}`}></div>
+        <div className={`spinner ${isLoadingBtn ? 'loading' : ''}`}></div>
       </div>
       <div className={`validation ${!isValid ? 'invalid' : ''}`}>
         {errors}

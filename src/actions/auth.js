@@ -17,7 +17,7 @@ export const signin = (formData, location) => async(dispatch) => {
             // Redirect to previous location if it exists and is not the login location
             window.location.replace(previousLocation);
             // navigate(previousLocation, { replace: true });
-          } else {
+        } else {
             // Redirect to '/patients' if there is no previous location or it is the login location
             // navigate('/patients', { replace: true });
             window.location.replace('/dashboard');
@@ -35,7 +35,7 @@ export const signin = (formData, location) => async(dispatch) => {
     }
 }
 
-export const createUser = (newUser, setError) => async(dispatch) => {
+export const createUser = (newUser) => async(dispatch) => {
     try{
         dispatch({ type: START_LOADING })
         const {data} = await api.createUser(newUser);
@@ -45,6 +45,14 @@ export const createUser = (newUser, setError) => async(dispatch) => {
         })
         window.location.replace('/login?verification=true'); // Redirect with query parameter
     }catch(error){
-        setError('Unable to create user at this time, please try again')
+        // setError('Unable to create user at this time, please try again')
+        if (error.response) {
+            // console.log("Error status:", error.response.status);
+            // console.log("Error message:", error.response.data.message);
+            return error.response; // Return the error response object
+        } else {
+            console.log("Error details:", error.message);
+            throw error; // Re-throw the error to be caught in the handleSubmit function
+        }
     }
 }

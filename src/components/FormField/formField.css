@@ -4,6 +4,7 @@
     flex-direction: column;
     margin-bottom: .3rem;
 }
+#dark .reg-textarea-select-group,
 #dark .reg-input{
     background: var(--dark);
     color: var(--body-color);
@@ -67,6 +68,7 @@
     font-size: 1rem;
     transform: translate(10px, 6px);
     transform-origin: left;
+    margin-left: .5rem;
     transition: transform .25s;
     z-index: 1;
 }
@@ -81,7 +83,6 @@
     border-radius: .3rem;
     color: var(--primary-color);
     padding: .2rem .4rem;
-    margin-left: 1rem;
     transition: var(--transition);
 }
 .reg-textarea-select-group:is(:focus, :valid),

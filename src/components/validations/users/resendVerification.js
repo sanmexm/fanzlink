@@ -9,7 +9,8 @@ const userValidateEmailAddress = (postData, getAllUsers) => {
     } else if (!emailRegex.test(postData)) {
       errors.push('Invalid email address');
       isValid = false;
-    } else if (!getAllUsers.map(user => user.emailAddress).includes(postData)) {
+    } else if (Array.isArray(!getAllUsers) && !getAllUsers.map(user => user.emailAddress).includes(postData)) {
+    // } else if (!getAllUsers.map(user => user.emailAddress).includes(postData)) {
       errors.push('Email address does not exist');
       isValid = false;
     }

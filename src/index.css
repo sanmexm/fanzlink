@@ -149,7 +149,7 @@ h1, h2, h3, h4, h5{
 	color: green;
 }
 .toast-option{
-    background-color: var(--whine) !important;
+    background-color: var(--error) !important;
     color: var(--white) !important;
 }
 

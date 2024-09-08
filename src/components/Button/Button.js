@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './button.css'
 
-const Button = ({ buttonWrapper, buttonClasses, onClickButton, linkButton, buttonClickWrap, onClickNavigate, isButtonDisabled, buttonIconBack, onClickName, buttonIcon, linkTo, linkClass, linkName, linkIcon, title}) => {
+const Button = ({ buttonWrapper, buttonClasses, onClickButton, linkButton, hrefHashTagButton, buttonClickWrap, onClickNavigate, isButtonDisabled, buttonIconBack, onClickName, buttonIcon, linkTo, linkClass, linkName, linkIcon, title}) => {
   
   const classNames = buttonClasses ? buttonClasses.join(' ') : '';
     
@@ -12,8 +12,10 @@ const Button = ({ buttonWrapper, buttonClasses, onClickButton, linkButton, butto
       <div className={buttonWrapper}>
         { onClickButton ? (
             <button className={`${buttonClickWrap} ${classNames}`} onClick={onClickNavigate} disabled={isButtonDisabled} title={title}>{buttonIconBack} {onClickName} {buttonIcon}</button>
-        ): linkButton ? (
+        ) : linkButton ? (
             <Link to={linkTo} className={linkClass} title={title}>{linkName} {linkIcon}</Link>
+        ) : hrefHashTagButton ? (
+            <a href={`#${linkTo}`} className={linkClass} title={title}>{linkName} {linkIcon}</a>
         ) : null }
       </div>
     </>

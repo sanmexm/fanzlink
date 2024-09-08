@@ -4,6 +4,9 @@ import { about, email, facebook, twitter, verification } from '../../assets'
 import './userProfile.css'
 
 const UserProfile = () => {
+    // const authData                                      = JSON.parse(localStorage.getItem('authData'))
+    // const UserUniqueId          = authData?.result?._id +''+ authData?.result?.firstName +' '+ authData?.result?.lastName
+    // const userUniqueId                                  = authData?.result?._id
     const [toggleBtn, setToggleBtn] = useState(false)
 
     const toggleButton = () => {
@@ -28,19 +31,19 @@ const UserProfile = () => {
 
                 <ul className='profile-card-contact'>
                     <li>
-                        <a href='#'>
+                        <a href='/'>
                             <div className='profile-card-icon'><img src={email} alt='email' /></div>
                             <p>example@email.com</p>
                         </a>
                     </li>
                     <li>
-                        <a href='#'>
+                        <a href='/'>
                             <div className='profile-card-icon'><img src={twitter} alt='whatsapp' /></div>
                             <p>twitter/username</p>
                         </a>
                     </li>
                     <li>
-                        <a href='#'>
+                        <a href='/'>
                             <div className='profile-card-icon'><img src={facebook} alt='facebook' /></div>
                             <p>facebook/username</p>
                         </a>

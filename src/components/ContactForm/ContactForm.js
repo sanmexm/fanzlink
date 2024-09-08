@@ -148,7 +148,7 @@ const ContactForm = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
       setSavingInfo(true);
-      // dispatch(createContactUsMessage(postData, sentMessage))
+      // dispatch(createContactUsMessage(postData))
       console.log(postData)
       // sentMessage()
       // resetFormData()
@@ -156,28 +156,28 @@ const ContactForm = () => {
 
   return (
     <>
-        <form className='contact-reg-container' onSubmit={handleSubmit} autoComplete="off">
-            <div className='contact-login-container-title'>
-                <h3>Send a message</h3>
-                <small>We'd love help</small>
-            </div>
+      <form className='contact-reg-container' onSubmit={handleSubmit} autoComplete="off">
+        <div className='contact-login-container-title'>
+            <h3>Send a message</h3>
+            <small>We'd love help</small>
+        </div>
 
-            <div className=''>
-            <FormField inputType type="text" labelName="First Name" name="firstName" value={postData.firstName} handleChange={handleChange} isLoading={isLoading.firstName} isValid={isValid.firstName} errors={firstNameErrors || []} />
-                
-            <FormField inputType type="text" labelName="Last Name" name="lastName" value={postData.lastName} handleChange={handleChange} isLoading={isLoading.lastName} isValid={isValid.lastName} errors={lastNameErrors || []} />
+        <div className=''>
+        <FormField inputType type="text" labelName="First Name" name="firstName" value={postData.firstName} handleChange={handleChange} isLoading={isLoading.firstName} isValid={isValid.firstName} errors={firstNameErrors || []} />
+            
+        <FormField inputType type="text" labelName="Last Name" name="lastName" value={postData.lastName} handleChange={handleChange} isLoading={isLoading.lastName} isValid={isValid.lastName} errors={lastNameErrors || []} />
 
-            <FormField inputType type="text" maxLength={15} labelName="Primary phone" name="primaryPhone" value={postData.primaryPhone} handleChange={handleChange} isLoading={isLoading.primaryPhone} isValid={isValid.primaryPhone} errors={primaryPhoneErrors || []} />
+        <FormField inputType type="text" maxLength={15} labelName="Primary phone" name="primaryPhone" value={postData.primaryPhone} handleChange={handleChange} isLoading={isLoading.primaryPhone} isValid={isValid.primaryPhone} errors={primaryPhoneErrors || []} />
 
-            <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoading={isLoading.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
+        <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoading={isLoading.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
 
-            <FormField textareaType maxLength={1000} labelName="Message" name="message" value={postData.message} handleChange={handleChange} isLoading={isLoading.message} isValid={isValid.message} errors={messageErrors || []} />
+        <FormField textareaType maxLength={1000} labelName="Message" name="message" value={postData.message} handleChange={handleChange} isLoading={isLoading.message} isValid={isValid.message} errors={messageErrors || []} />
 
-            <div className='contact-captcha'><ReCAPTCHA sitekey="6LdOKzwnAAAAAFbP4KMhcR-XyF8IFEKYkJ6g-IM-" onChange={handleChangeCaptcha}/></div>
+        <div className='contact-captcha'><ReCAPTCHA sitekey="6LdOKzwnAAAAAFbP4KMhcR-XyF8IFEKYkJ6g-IM-" onChange={handleChangeCaptcha}/></div>
 
-            <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Sending...</> : "Send"} isButtonDisabled={isButtonDisabled} buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']} />
-            </div>
-        </form>
+        <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Sending...</> : "Send"} isButtonDisabled={isButtonDisabled} buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo} />
+        </div>
+      </form>
     </>
   )
 }

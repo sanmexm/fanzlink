@@ -37,7 +37,10 @@ import EditProfileMainContent from './EditProfile/EditProfileMainContent/EditPro
 import EditProfileSideContent from './EditProfile/EditProfileSideContent/EditProfileSideContent'
 import EditProfileImageMainContent from './EditProfileImage/EditProfileImageMainContent/EditProfileImageMainContent'
 import EditProfileImageSideContent from './EditProfileImage/EditProfileImageSideContent/EditProfileImageSideContent'
-
+import SimilarPosts from './SimilarPosts/SimilarPosts'
+import PostReviews from './PostReviews/PostReviews'
+import RatePost from './RatePost/RatePost'
+import RatePostDataResponse from './RatePostDataResponse/RatePostDataResponse'
 
 export {
     Name,
@@ -79,4 +82,8 @@ export {
     EditProfileImageMainContent,
     EditProfileImageSideContent,
     RightbarMenu,
+    SimilarPosts,
+    PostReviews,
+    RatePost,
+    RatePostDataResponse,
 }

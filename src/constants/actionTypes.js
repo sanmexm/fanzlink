@@ -22,13 +22,21 @@ export const SEARCH_USER_POSTS            = 'SEARCH_USER_POSTS'
 
 export const FETCH_USER_POSTS             = 'FETCH_USER_POSTS'
 
+export const FETCH_SIMILAR_POSTS          = 'FETCH_SIMILAR_POSTS'
+
 export const FETCH_POST                   = 'FETCH_POST'
 
 export const UPDATE_POST                  = 'UPDATE_POST'
 
 export const COMMENT_POST                 = 'COMMENT_POST'
 
+export const RATE_POST                    = 'RATE_POST'
+
+export const VIEW_RATED_POST              = 'VIEW_RATED_POST'
+
 export const LIKE_POST                    = 'LIKE_POST'
+
+export const REVIEW_POST                  = 'REVIEW_POST'
 
 export const DELETE_POST                  = 'DELETE_POST'
 

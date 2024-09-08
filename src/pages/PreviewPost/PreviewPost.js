@@ -10,10 +10,10 @@ const PreviewPost = () => {
         <Helmet><title>preview</title></Helmet>
         <div className='container'>
             <div className='preview-post-main-content'>
-                <PreviewPostMainContent />
+              <PreviewPostMainContent />
             </div>
             <div className='preview-post-side-content'>
-                <PreviewPostSideContent />
+              <PreviewPostSideContent />
             </div>
         </div>
     </>

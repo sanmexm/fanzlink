@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { Footer, Navbar } from './components';
 import { About, Contact, CreatePost, ComingSoon, Dashboard, Faq, Home, Login, PageNotFound, PreviewPost, Privacy, Profile, Register, Subscription, Terms, UserProfile, EditPost, TabContent, EditPostImage, EditProfile, EditProfileImage, VerifyEmail, ForgotPassword, ResetPassword, ResendVerification } from './pages';
 
-export const ThemeContext = createContext(null) 
+export const ThemeContext = createContext(null)
 
 const App = () => {
     const authData          = JSON.parse(localStorage.getItem('authData'))
@@ -34,10 +34,10 @@ const App = () => {
                 <Route path="/posts/edit-post/:id" exact element={authData ? (<EditPost />) : (<Navigate to='/login' replace />)} />
                 <Route path="/posts/edit-post-image/:id" exact element={authData ? (<EditPostImage />) : (<Navigate to='/login' replace />)} />
                 <Route path="/posts/preview-post/:id" exact element={authData ? (<PreviewPost />) : (<Navigate to='/login' replace />)} />
-                <Route path='/user/:id/verify/:emailToken' exact element={<VerifyEmail />} />
-                <Route path='/forgot-password' exact element={<ForgotPassword />} />
-                <Route path='/resend-verification' exact element={<ResendVerification />} />
-                <Route path='/users/:id/reset-password/:emailAddress/token/:resetPasswordToken' exact element={<ResetPassword />} />
+                <Route path='/user/:id/verify/:emailToken' exact element={!authData ? (<VerifyEmail /> ) : (<Navigate to="/" replace />)} />
+                <Route path='/forgot-password' exact element={!authData ? (<ForgotPassword />) : (<Navigate to="/" replace />)} />
+                <Route path='/resend-verification' exact element={!authData ? (<ResendVerification />) : (<Navigate to="/" replace />)} />
+                <Route path='/users/:id/reset-password/:emailAddress/token/:resetPasswordToken' exact element={!authData ? (<ResetPassword /> ) : (<Navigate to="/" replace />)} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />

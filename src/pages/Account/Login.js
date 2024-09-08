@@ -99,59 +99,61 @@ const Login = () => {
       setIsButtonDisabled(hasFormErrors);
     }, [debouncedPostData]);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
       e.preventDefault();
         setSavingInfo(true);
         const response = await dispatch(signin(postData, location))
-        try{
-          if(response.status === 400){
-            setErrorMessage(response.data.message)
-          }
-        } catch(error){
-          setErrorMessage("An unexpected error occurred.");
-        }finally{
+        if(response?.status === 400){
+          setErrorMessage(response.data.message)
           setSavingInfo(false);
+        } else if (response?.status === 404){
+          setErrorMessage(response.data.message)
+          setSavingInfo(false);
+        }else{
+          setSavingInfo(true);
+          setErrorMessage(false)
         }
     }
 
   return (
     <>
-        <Helmet><title>{pageName}</title></Helmet>
-        <div className='account-container'>
-          <form className='account-login-container' onSubmit={handleSubmit} autoComplete="off" >
-              <div className='account-login-container-title'>
-                  <h3>Login</h3>
-              </div>
+      <Helmet><title>{pageName}</title></Helmet>
+      <div className='account-container'>
+        <form className='account-login-container' onSubmit={handleSubmit} autoComplete="off" >
+            <div className='account-login-container-title'>
+                <h3>Login</h3>
+            </div>
 
-              <div className='account-login-input-btn-pass-container'>
-                <FormField inputType type="text" labelName="Username" name="username" value={postData.username} handleChange={handleChange} isLoading={isLoading.username} isValid={isValid.username} errors={usernameErrors || []} />
+            <div className='account-login-input-btn-pass-container'>
+              <FormField inputType type="text" labelName="Username" name="username" value={postData.username} handleChange={handleChange} isLoading={isLoading.username} isValid={isValid.username} errors={usernameErrors || []} />
 
-                <div className='account-login-group-wrapper'>
-                  <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Password" name="password" value={postData.password} handleChange={handleChange} isLoading={isLoading.password} isValid={isValid.password} errors={passwordErrors || []} />
-                  <div className='account-login-show-hide-pass-container'>
-                      <span className={ postData.password.length > 0 ? 'show-hide-password unlock' : 'show-hide-password' } onClick={() => setHideShow((prev) => !prev)}>{hideShow ? <VisibilityOffIcon /> : <VisibilityIcon />}</span>
-                  </div>
+              <div className='account-login-group-wrapper'>
+                <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Password" name="password" value={postData.password} handleChange={handleChange} isLoading={isLoading.password} isValid={isValid.password} errors={passwordErrors || []} />
+                <div className='account-login-show-hide-pass-container'>
+                    <span className={ postData.password.length > 0 ? 'show-hide-password unlock' : 'show-hide-password' } onClick={() => setHideShow((prev) => !prev)}>{hideShow ? <VisibilityOffIcon /> : <VisibilityIcon />}</span>
                 </div>
+              </div>
 
-                <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Signing in...</> : "Sign in"} isButtonDisabled={isButtonDisabled} buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']} />
-                {errorMessage && (
-                  <div className="form-response-message">
-                    <p className="error-msg">{errorMessage}</p>
-                  </div>
-                )}
-                {isRegistered && (
-                  <div className="registration-success-message">
-                    <p className="success-msg">Your registration was successful. Please check your email to verify your account.</p>
-                  </div>
-                )}
-              </div>
-              <Link className='forgot-password' to="/forgot-password">forgot password?</Link>
-              <div className='have-account-wrapper'>
-                  <span>Don't have an account?</span>
-                  <Link className='account-reg-log' to="/register">Sign up</Link>
-              </div>
-          </form>
-        </div>
+              <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Signing in...</> : "Sign in"} isButtonDisabled={isButtonDisabled} buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo} />
+              
+              {errorMessage && (
+                <div className="form-response-message">
+                  <p className="error-msg">{errorMessage}</p>
+                </div>
+              )}
+              {isRegistered && (
+                <div className="registration-success-message">
+                  <p className="success-msg">Your registration was successful. Please check your email to verify your account.</p>
+                </div>
+              )}
+            </div>
+            <Link className='forgot-password' to="/forgot-password">forgot password?</Link>
+            <div className='have-account-wrapper'>
+                <span>Don't have an account?</span>
+                <Link className='account-reg-log' to="/register">Sign up</Link>
+            </div>
+        </form>
+      </div>
     </>
   )
 }

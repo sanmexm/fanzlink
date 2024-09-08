@@ -29,7 +29,9 @@ export const signInUser            = (formData) => API.post(`${users}/signin`, f
 
 //posts
 export const fetchPosts            = (page) => API.get(`${posts}?page=${page}`)
+// export const fetchPostsBySearch    = (page, searchQuery) => API.get(`${posts}/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}&page=${page}`)
 export const fetchPostsBySearch    = (page, searchQuery) => API.get(`${posts}/search?searchQuery=${searchQuery.search || 'none'}&page=${page}`)
+export const fetchSimilarPosts     = (searchQuery) => API.get(`${posts}/similarSearch?searchQuery=${searchQuery.search || 'none'}`)
 export const fetchPost             = (id) => API.get(`${posts}/${id}`)
 export const fetchPostsByUser      = (page, userId) => API.get(`${posts}/userPosts/${userId}?page=${page}`)
 export const searchUserPosts       = (page, userId, searchQuery) => API.get(`${posts}/${userId}/search?searchQuery=${searchQuery} || 'none'}$page=${page}`)
@@ -37,6 +39,9 @@ export const createPost            = (newPost) => API.post(`${posts}/createPost`
 export const updatePost            = (id, updatedPost) => API.patch(`${posts}/${id}`, updatedPost)
 export const likePost              = (id) => API.patch(`${posts}/${id}/likePost`)
 export const commentPost           = (value, id) => API.post(`${posts}/${id}/commentPost`, { value })
+export const reviewPost            = (id, userId, value) => API.post(`${posts}/${id}/${userId}/reviewPost`, { value })
+export const ratePost              = (id, userId, star) => API.put(`${posts}/${id}/${userId}/userRating`, star)
+export const fetchPostRatings      = (id) => API.get(`${posts}/${id}/viewPostRatings`)
 export const deletePost            = (id) => API.delete(`${posts}/${id}`)
 
 //contact us

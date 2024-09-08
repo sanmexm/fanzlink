@@ -21,7 +21,7 @@ const ResetPassword = () => {
     const [errorMessage, setErrorMessage]                     = useState(false);
     
     const [postData, setPostData]          = useState({password: '', confirmPassword: ''})
-    const [isLoading, setIsLoading]        = useState({password: false, confirmPassword: false})
+    const [isLoadingBtn, setIsLoadingBtn]  = useState({password: false, confirmPassword: false})
     const [isValid, setIsValid]            = useState({password: false, confirmPassword: false})
 
     const useDebounce = (value, delay ) => {
@@ -41,7 +41,7 @@ const ResetPassword = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setIsLoading((prevState) => ({ ...prevState, [name]: true }));
+        setIsLoadingBtn((prevState) => ({ ...prevState, [name]: true }));
         setPostData((prevState) => ({ ...prevState, [name]: value }));
     }
 
@@ -52,7 +52,7 @@ const ResetPassword = () => {
             ...prevState,
             password: isValid,
           }));
-          setIsLoading((prevState) => ({
+          setIsLoadingBtn((prevState) => ({
             ...prevState,
             password: false,
           }));
@@ -66,7 +66,7 @@ const ResetPassword = () => {
             ...prevState,
             confirmPassword: isValid,
           }));
-          setIsLoading((prevState) => ({
+          setIsLoadingBtn((prevState) => ({
             ...prevState,
             confirmPassword: false,
           }));
@@ -143,20 +143,19 @@ const ResetPassword = () => {
             ) : (
               <div className='account-login-group-wrapper'>
                 <div className='account-login-group-wrapper'>
-                  <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Password" name="password" value={postData.password} handleChange={handleChange} isLoading={isLoading.password} isValid={isValid.password} errors={passwordErrors || []} />
+                  <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Password" name="password" value={postData.password} handleChange={handleChange} isLoadingBtn={isLoadingBtn.password} isValid={isValid.password} errors={passwordErrors || []} />
                   <div className='account-login-show-hide-pass-container'>
                       <span className={ postData.password.length > 0 ? 'show-hide-password unlock' : 'show-hide-password' } onClick={() => setHideShow((prev) => !prev)}>{hideShow ? <VisibilityOffIcon /> : <VisibilityIcon />}</span>
                   </div>
                 </div>
-                <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Confirm Password" name="confirmPassword" value={postData.confirmPassword} handleChange={handleChange} isLoading={isLoading.confirmPassword} isValid={isValid.confirmPassword} errors={confirmPasswordErrors || []} />
+                <FormField inputType type={hideShow ? 'text' : 'password'} labelName="Confirm Password" name="confirmPassword" value={postData.confirmPassword} handleChange={handleChange} isLoadingBtn={isLoadingBtn.confirmPassword} isValid={isValid.confirmPassword} errors={confirmPasswordErrors || []} />
                 
                 <Button
                   onClickButton
                   buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`}
                   onClickName={savingInfo ? <>{<Loader />} Updating password...</> : "Reset Password"}
                   isButtonDisabled={isButtonDisabled}
-                  buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']}
-                  disabled={savingInfo}
+                  buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo}
                 />
                 <div className='forgot-password-have-account-wrapper'>
                   <Link className='forgot-password-account-reg-log' to="/login">

@@ -14,7 +14,7 @@ const ForgotPassword = () => {
   const [emailAddressErrors, setEmailAddressErrors]  = useState(null);
   const [isButtonDisabled, setIsButtonDisabled]      = useState(true);
   const [postData, setPostData]                      = useState({emailAddress: ''})
-  const [isLoading, setIsLoading]                    = useState({emailAddress: false})
+  const [isLoadingBtn, setIsLoadingBtn]              = useState({emailAddress: false})
   const [isValid, setIsValid]                        = useState({emailAddress: false})
   const [message, setMessage]                        = useState(false);
   const {getAllUsers}                                = useSelector((state) => state.usersLists);
@@ -46,7 +46,7 @@ const ForgotPassword = () => {
 
     const handleChange = (e) => {
       const { name, value } = e.target;
-      setIsLoading((prevState) => ({ ...prevState, [name]: true }));
+      setIsLoadingBtn((prevState) => ({ ...prevState, [name]: true }));
       setPostData((prevState) => ({ ...prevState, [name]: value }));
     }
 
@@ -57,7 +57,7 @@ const ForgotPassword = () => {
           ...prevState,
           emailAddress: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           emailAddress: false,
         }));
@@ -113,15 +113,15 @@ const ForgotPassword = () => {
           </div>
           {!message ? (
             <form onSubmit={handleSubmit} autoComplete="off">
-              <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoading={isLoading.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
+              <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoadingBtn={isLoadingBtn.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
 
               <Button
                 onClickButton
                 buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`}
                 onClickName={savingInfo ? <>{<Loader />} Verifying Email...</> : "Verify Email"}
                 isButtonDisabled={isButtonDisabled}
-                buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']}
-                disabled={savingInfo} // Disable the button while loading
+                buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} 
+                disabled={savingInfo}
               />
 
               <div className='forgot-password-have-account-wrapper'>

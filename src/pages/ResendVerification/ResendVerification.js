@@ -15,7 +15,7 @@ const ResendVerification = () => {
   const [emailAddressErrors, setEmailAddressErrors]  = useState(null);
   const [isButtonDisabled, setIsButtonDisabled]      = useState(true);
   const [postData, setPostData]                      = useState({emailAddress: ''})
-  const [isLoading, setIsLoading]                    = useState({emailAddress: false})
+  const [isLoadingBtn, setIsLoadingBtn]              = useState({emailAddress: false})
   const [isValid, setIsValid]                        = useState({emailAddress: false})
   const [successMessage, setSuccessMessage]          = useState(false);
   const [errorMessage, setErrorMessage]              = useState(false);
@@ -58,7 +58,7 @@ const ResendVerification = () => {
 
     const handleChange = (e) => {
       const { name, value } = e.target;
-      setIsLoading((prevState) => ({ ...prevState, [name]: true }));
+      setIsLoadingBtn((prevState) => ({ ...prevState, [name]: true }));
       setPostData((prevState) => ({ ...prevState, [name]: value }));
     }
 
@@ -69,7 +69,7 @@ const ResendVerification = () => {
           ...prevState,
           emailAddress: isValid,
         }));
-        setIsLoading((prevState) => ({
+        setIsLoadingBtn((prevState) => ({
           ...prevState,
           emailAddress: false,
         }));
@@ -126,15 +126,14 @@ const ResendVerification = () => {
                 )}
           </div>
           <form onSubmit={handleSubmit} autoComplete="off">
-            <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoading={isLoading.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
+            <FormField inputType type="text" labelName="Email Address" name="emailAddress" value={postData.emailAddress} handleChange={handleChange} isLoadingBtn={isLoadingBtn.emailAddress} isValid={isValid.emailAddress} errors={emailAddressErrors || []} />
 
             <Button
               onClickButton
               buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`}
               onClickName={savingInfo ? <>{<Loader />} Sending Verification...</> : "Send Verification"}
               isButtonDisabled={isButtonDisabled}
-              buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']}
-              disabled={savingInfo} // Disable the button while loading
+              buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo}
             />
           </form>
           {(successMessage) ? (

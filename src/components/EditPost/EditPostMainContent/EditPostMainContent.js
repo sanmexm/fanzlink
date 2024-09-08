@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
 import { categoryOptions } from '../../../utils/constants';
 import { postValidateTitle, postValidateCategory, postValidatePrice, postValidateDescription, postValidateLink, postValidateLocation, postValidateContact } from '../../validations/posts/editUsersPost';
 import {Button, FormField, Loader} from '../../';
@@ -9,6 +8,9 @@ import {Button, FormField, Loader} from '../../';
 import './editPostMainContent.css'
 
 const EditPostMainContent = () => {
+    const authData                                      = JSON.parse(localStorage.getItem('authData'))
+    // const UserUniqueId          = authData?.result?._id +''+ authData?.result?.firstName +' '+ authData?.result?.lastName
+    const userUniqueId                                  = authData?.result?._id
     const dispatch                                      = useDispatch();
     const navigate                                      = useNavigate();
     const location                                      = useLocation();
@@ -203,7 +205,7 @@ const EditPostMainContent = () => {
 
               <FormField inputType type="text" labelName="Contact" name="contact" value={postData.contact} handleChange={handleChange} isLoading={isLoading.contact} isValid={isValid.contact} errors={contactErrors || []} />
 
-              <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Updating...</> : "Update"} isButtonDisabled={isButtonDisabled} buttonClasses={isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass']} />
+              <Button onClickButton buttonClickWrap={savingInfo ? `button-login-submitted` : `button-login-submit`} onClickName={savingInfo ? <>{<Loader />} Updating...</> : "Update"} isButtonDisabled={isButtonDisabled} buttonClasses={savingInfo ? ['button-disabled'] : (isButtonDisabled ? ['buttonDisabledClass'] : ['buttonEnabledClass'])} disabled={savingInfo} />
 
             </form>
           </div>

@@ -1,0 +1,36 @@
+.rating-wrapper {
+    margin-left: 2rem;
+}
+.rating-label {
+    position: relative;
+    transition: var(--transition);
+    cursor: pointer;
+}
+.rating-label.unfilled svg {
+    color: var(--light-grey);
+}
+.rating-label.filled svg {
+    color: var(--primary-color);
+}
+  
+
+/* media queries */
+@media screen and (max-width: 1024px){
+    
+}
+
+@media screen and (max-width: 992px){
+    
+}
+
+@media screen and (max-width: 768px){
+    
+}
+
+@media screen and (max-width: 430px){
+    
+}
+
+@media screen and (max-width: 320px){
+    
+}

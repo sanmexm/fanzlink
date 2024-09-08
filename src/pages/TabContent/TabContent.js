@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import { HomeIcon, LockRoundedIcon, SettingsRoundedIcon } from '../../utils/constants'
 import { Button, FormField } from '../../components';
 import './tabContent.css'
@@ -17,6 +16,7 @@ const TabContent = () => {
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
+
   return (
     <>
         <div className='widget-main-wrapper'>

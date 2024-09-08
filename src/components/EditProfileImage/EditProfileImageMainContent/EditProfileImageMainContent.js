@@ -9,6 +9,9 @@ import {Button, FormField, Loader} from '../../';
 import './editProfileImageMainContent.css'
 
 const EditProfileImageMainContent = () => {
+    const authData                                      = JSON.parse(localStorage.getItem('authData'))
+    // const UserUniqueId          = authData?.result?._id +''+ authData?.result?.firstName +' '+ authData?.result?.lastName
+    const userUniqueId                                  = authData?.result?._id
     const dispatch                                      = useDispatch();
     const navigate                                      = useNavigate();
     const location                                      = useLocation();

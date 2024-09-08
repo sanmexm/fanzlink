@@ -2,8 +2,8 @@ import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Button, SubHeaders } from '../../components'
 import { about } from '../../assets'
-import './about.css'
 import { featuresList } from '../../utils/constants'
+import './about.css'
 
 const About = () => {
 
